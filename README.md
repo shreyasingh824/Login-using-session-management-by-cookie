@@ -1,40 +1,39 @@
+Getting Started
+Clone the repository to your local machine:
 
+bash
+Copy code
+git clone https://github.com/your-username/login-page.git
+Set up a web server with PHP and MySQL support. You can use tools like XAMPP or MAMP for a local development environment.
 
-User
-write readme file for github repo for this code here i am creating login page with session management using cookie "<?php
-include('connection.php');
+Create a MySQL database and import the provided database.sql file to set up the necessary table.
 
-if (isset($_POST['submit'])) {
-    $username = $_POST['user'];
-    $password = $_POST['pass'];
+Update the connection.php file with your MySQL database credentials:
 
-    $sql = "SELECT * FROM login WHERE username = '$username' AND password = '$password'";
-    $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-    $count = mysqli_num_rows($result);
+php
+Copy code
+$servername = "your_server_name";
+$username = "your_username";
+$password = "your_password";
+$dbname = "your_database_name";
 
-    if ($count == 1) {
-        // Start a session
-        session_start();
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-        // Set a session variable
-        $_SESSION['username'] = $username;
-
-        // Set a cookie with the username (example: valid for 1 day)
-        setcookie('user_cookie', $username, time() + (86400 * 1), "/");
-
-        // Redirect to welcome.php
-        header("Location: welcome.php");
-        exit();
-    } else {
-        echo '<script>
-                alert("Login failed");
-                window.location.href = "index.php";
-              </script>';
-    }
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
-?>"
-ChatGPT
-Login Page with Session Management
-This repository contains PHP code for a simple login page with session management using cookies. The code connects to a MySQL database to authenticate users based on their provided username and password.
+Usage
+Open the project in a web browser by navigating to the project folder.
 
+Access the index.php file to see the login page.
+
+Enter valid credentials to log in. Upon successful login, the user will be redirected to the welcome.php page.
+
+Features
+Session Management: The code utilizes PHP sessions to keep track of user authentication.
+
+Cookie Storage: A cookie named user_cookie is set upon successful login, which stores the username and is valid for 1 day.
+
+Database Interaction: The code interacts with a MySQL database to authenticate users against stored credentials.
